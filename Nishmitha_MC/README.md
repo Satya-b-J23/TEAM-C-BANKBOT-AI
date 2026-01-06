@@ -1,42 +1,47 @@
-BankBot AI – Banking FAQ Chatbot
+🤖BankBot AI – Banking FAQ Chatbot
 
 BankBot AI is a banking-domain specific chatbot built using Streamlit and Ollama (LLaMA3).
 It strictly answers only banking and finance-related questions and blocks all non-banking queries.
 
+
 📌 Features
 
- Interactive chat interface using Streamlit
+ ➤Interactive chat interface using Streamlit
 
- Answers only banking & finance-related queries
+ ➤Answers only banking & finance-related queries
 
- Automatically blocks non-banking questions
+ ➤Automatically blocks non-banking questions
 
- Powered by LLaMA3 via Ollama
+ ➤Powered by LLaMA3 via Ollama
+ 
 
 📂Chat history management:
 
-Multiple saved chats
+⇨Multiple saved chats
 
-Auto-generated chat titles
+⇨Auto-generated chat titles
 
-Create & delete chats
+⇨Create & delete chats
 
-🔒 Domain-restricted responses for higher accuracy
 
 🛠️ Tech Stack
 
-Python
+→ Python
 
-Streamlit
+→ Streamlit
 
-Ollama (LLaMA3)
+→ Ollama (LLaMA3)
 
-Custom banking query validation logic
+→ Custom banking query validation logic
+
 
 📂 Project Structure
 ├── Bot.py
+
 ├── banking_intellect.py
+
 ├── README.md
+
 
 ⚙️ Installation & Setup
 1️⃣Install dependencies
