@@ -1,7 +1,10 @@
 🤖BankBot AI – Banking FAQ Chatbot
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 BankBot AI is a banking-domain specific chatbot built using Streamlit and Ollama (LLaMA3).
 It strictly answers only banking and finance-related questions and blocks all non-banking queries.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
 📌 Features
@@ -14,6 +17,7 @@ It strictly answers only banking and finance-related questions and blocks all no
 
  ➤Powered by LLaMA3 via Ollama
  
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📂Chat history management:
 
@@ -23,6 +27,7 @@ It strictly answers only banking and finance-related questions and blocks all no
 
 ⇨Create & delete chats
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🛠️ Tech Stack
 
@@ -33,7 +38,7 @@ It strictly answers only banking and finance-related questions and blocks all no
 → Ollama (LLaMA3)
 
 → Custom banking query validation logic
-
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📂 Project Structure
 ├── Bot.py
@@ -42,6 +47,7 @@ It strictly answers only banking and finance-related questions and blocks all no
 
 ├── README.md
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⚙️ Installation & Setup
 1️⃣Install dependencies
@@ -52,4 +58,5 @@ ollama run llama3
 
 3️⃣Start the application
 streamlit run Bot.py
+
 
