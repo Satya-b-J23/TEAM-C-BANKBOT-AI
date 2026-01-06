@@ -1,0 +1,41 @@
+{
+
+
+  "current_account": {
+    "keywords": ["current account", "business account"],
+    "answer": "A current account is designed for frequent transactions, mainly used by businesses."
+  },
+
+  "balance_check": {
+    "keywords": ["check balance", "account balance", "how to check balance"],
+    "answer": "For security reasons, account balance can be checked using the sidebar balance form."
+  },
+
+  "loan": {
+    "keywords": ["loan", "home loan", "personal loan", "education loan", "vehicle loan"],
+    "answer": "Banks provide various loans such as home loans, personal loans, education loans, and vehicle loans."
+  },
+
+  "interest_rate": {
+    "keywords": ["interest rate", "bank interest"],
+    "answer": "Interest rates vary based on account type and bank policy. Please contact the bank for latest rates."
+  },
+
+  "kyc": {
+    "keywords": ["kyc", "documents", "verification"],
+    "answer": "KYC documents usually include Aadhaar, PAN card, and address proof."
+  },
+  
+  "loan_general": {
+    "keywords": ["loan", "bank loan"],
+    "answer": "Banks provide different types of loans such as home loans, education loans, personal loans, and vehicle loans."
+  },
+
+  "education_loan": 
+  {
+    "keywords": ["education loan", "student loan", "study loan"],
+    "answer": "An education loan helps students finance higher studies. It covers tuition fees, books, accommodation, and other education-related expenses. Repayment usually starts after course completion."
+  }
+}
+
+

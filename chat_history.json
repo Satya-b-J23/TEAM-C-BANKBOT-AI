@@ -1,0 +1,189 @@
+{
+  "sessions": [
+    {
+      "time": "2025-12-17 19:47",
+      "messages": [
+        [
+          "You",
+          "about loan"
+        ],
+        [
+          "Bot",
+          "Banks provide various loans such as home loans, personal loans, education loans, and vehicle loans."
+        ],
+        [
+          "You",
+          "how to get cheque book"
+        ],
+        [
+          "Bot",
+          "To obtain your cheques, you can follow these steps:\n\n1. **Banking App or Website**: Most banks now offer mobile apps or websites where you can access your bank accounts easily. Simply sign in with your credentials and navigate to the section where you can view your cheques.\n\n2. **Online Banking**: If you prefer a more traditional approach, many banks have online banking services that allow you to manage your finances through their website or app.\n\n3. **Banking App**: Some banks offer an app for both mobile and desktop devices. You can download it from the Apple App Store or Google Play Store.\n\n4. **Local Branches**: If you live in a city where there are branches of major banks, visiting them is another option. Banks often have physical locations where you can check your cheques directly.\n\n5. **Banking Services**: Some banks offer banking services through their own websites"
+        ],
+        [
+          "You",
+          "web developer"
+        ],
+        [
+          "Bot",
+          "\u274c I am a banking-only assistant.\n\nYou can ask about:\n- Bank accounts\n- Loans & EMI\n- Interest rates\n- Cards & ATM\n- Deposits & KYC"
+        ]
+      ]
+    },
+    {
+      "time": "2025-12-17 19:51",
+      "messages": [
+        [
+          "You",
+          "about educational loan"
+        ],
+        [
+          "Bot",
+          "Banks provide various loans such as home loans, personal loans, education loans, and vehicle loans."
+        ],
+        [
+          "You",
+          "educational loan"
+        ],
+        [
+          "Bot",
+          "Banks provide various loans such as home loans, personal loans, education loans, and vehicle loans."
+        ],
+        [
+          "You",
+          "about emi"
+        ],
+        [
+          "Bot",
+          "Certainly! What specific question do you have regarding EMI (Electronic Money Transfer)? I'm here to help with any inquiries related to electronic money transfers, including their benefits, types, fees, and usage scenarios. If you need more detailed information or assistance in a particular area, feel free to ask!"
+        ]
+      ]
+    },
+    {
+      "time": "2025-12-17 19:53",
+      "messages": [
+        [
+          "You",
+          "upi"
+        ],
+        [
+          "Bot",
+          "\u274c I am a banking-only assistant.\n\nYou can ask about:\n- Bank accounts\n- Loans & EMI\n- Interest rates\n- Cards & ATM\n- Deposits & KYC"
+        ],
+        [
+          "You",
+          "how to deposit"
+        ],
+        [
+          "Bot",
+          "Certainly! Here's a step-by-step guide on how to deposit:\n\n1. **Choose the Right Account**: Before you can start, make sure you know which account you want to use for your deposits. This could be an individual savings account or a credit card.\n\n2. **Open an Account**: If you don't have one already, open a new one. You can do this online or at a bank branch.\n\n3. **Deposit Money**: Go to the website of the bank where you opened your account and click on \"My Account\" or \"Account Details.\"\n\n4. **Enter Your Information**: Fill out the necessary information such as your name, address, and any other relevant details about yourself.\n\n5. **Set Up a Deposit**: Depending on the type of account (individual savings, credit card), you may need to set up an automatic deposit service. This can be done through the bank's website or by calling their customer service.\n\n6. **Enter Your Deposits**: Enter the amount of money you want to deposit into your selected account. If you're using a credit card, enter"
+        ]
+      ]
+    },
+    {
+      "time": "2025-12-17 19:54",
+      "messages": [
+        [
+          "You",
+          "about bank services"
+        ],
+        [
+          "Bot",
+          "Certainly! Here's some information on various aspects of banking:\n\n1. Opening an Account: To open an account, you'll need to provide your personal identification details such as your name, date of birth, address, and contact information.\n\n2. Deposit and Withdrawal: Banks offer a wide range of deposit and withdrawal options including checking accounts, savings accounts, money market accounts, and credit cards.\n\n3. Transfer Services: Many banks allow you to transfer funds from one account to another or to a different bank account within the same institution.\n\n4. Personal Loans: If you need a loan for personal use, you can apply for a personal loan through your bank.\n\n5. Credit Cards: These are used to make purchases and pay bills on behalf of others.\n\n6. Savings Accounts: These offer higher interest rates than checking accounts but also carry more risk.\n\n7. Investment Options: Banks often offer investment options such as stocks, mutual funds, or real estate investments.\n\n8. Retirement Planning: Many banks provide services for retirement planning including IRA accounts, 401(k) plans, and tax-adv"
+        ]
+      ]
+    },
+    {
+      "time": "2025-12-18 19:58",
+      "messages": [
+        [
+          "You",
+          "hai"
+        ],
+        [
+          "Bot",
+          "\u274c I answer only banking-related questions."
+        ],
+        [
+          "You",
+          "hai"
+        ],
+        [
+          "Bot",
+          "\u274c I answer only banking-related questions."
+        ],
+        [
+          "You",
+          "about loan processes"
+        ],
+        [
+          "Bot",
+          "Banks provide various loans such as home loans, personal loans, education loans, and vehicle loans."
+        ],
+        [
+          "You",
+          "what is saving account"
+        ],
+        [
+          "Bot",
+          "A savings account allows customers to deposit money, earn interest, and withdraw funds when needed."
+        ],
+        [
+          "You",
+          "how to get checkbook"
+        ],
+        [
+          "Bot",
+          "\u274c I answer only banking-related questions."
+        ],
+        [
+          "You",
+          "how to get checque book"
+        ],
+        [
+          "Bot",
+          "\u274c I answer only banking-related questions."
+        ],
+        [
+          "You",
+          "how to open a saving account"
+        ],
+        [
+          "Bot",
+          "A savings account allows customers to deposit money, earn interest, and withdraw funds when needed."
+        ],
+        [
+          "You",
+          "how to open saving account"
+        ],
+        [
+          "Bot",
+          "A savings account allows customers to deposit money, earn interest, and withdraw funds when needed."
+        ],
+        [
+          "You",
+          "how to opensaving account"
+        ],
+        [
+          "Bot",
+          "A savings account allows customers to deposit money, earn interest, and withdraw funds when needed."
+        ],
+        [
+          "You",
+          "how to open saving account"
+        ],
+        [
+          "Bot",
+          "Opening a savings account is a straightforward process that involves several steps:\n\n1. Choose the type of savings account you want:\n   - Current Account: Allows you to withdraw funds at any time without penalties.\n   - Savings Account: Offers higher interest rates and access to more transactions.\n\n2. Determine your budget:\n   - Set a minimum balance for each account.\n   - Consider how much money you can realistically save in the short term.\n\n3. Choose an account type:\n   - Current Account\n   - Savings Account\n\n4. Open an account with your bank:\n   - Visit the website of your bank or call their customer service to open an account.\n   - Provide personal and financial information as required by your bank.\n\n5. Fill out the application form:\n   - Provide detailed personal and financial information.\n   - Choose a type of savings account based on your budget and needs.\n\n6. Apply for the account:\n   - Submit the necessary documents and payment details to your bank.\n   - Wait for approval from your bank.\n\n7. Receive your account:\n   - Your new savings account will be ready when"
+        ],
+        [
+          "You",
+          "hai"
+        ],
+        [
+          "Bot",
+          "\u274c I am a banking-only assistant.\n\nYou can ask about:\n- Bank accounts\n- Loans & EMI\n- Interest rates\n- Cards & ATM\n- Deposits & KYC"
+        ]
+      ]
+    }
+  ]
+}
