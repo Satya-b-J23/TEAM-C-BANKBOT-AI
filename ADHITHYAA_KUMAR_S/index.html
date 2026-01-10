@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BANK BOT AI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css"
+    />
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #0a1929;
+        --bg-secondary: #132f4c;
+        --bg-tertiary: #1e4976;
+        --bg-sidebar: #0a2540;
+        --bg-input: #173a5e;
+        --bg-modal: rgba(10, 25, 41, 0.9);
+        --text-primary: #e6f7ff;
+        --text-secondary: #8bb6e8;
+        --text-tertiary: #5a8fd6;
+        --border-color: #2d4d7a;
+        --border-light: #3a5f9a;
+        --user-message-bg: #0066cc;
+        --gpt-message-bg: #1e4976;
+        --accent-primary: #0070e0;
+        --accent-gradient: linear-gradient(135deg, #0066cc, #0099ff);
+        --banking-green: #00a86b;
+        --banking-gold: #ffd700;
+        --shadow-sm: 0 1px 3px rgba(0, 51, 102, 0.3);
+        --shadow-md: 0 4px 6px -1px rgba(0, 51, 102, 0.4);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 51, 102, 0.5);
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+        --transition-fast: 150ms ease;
+        --transition-normal: 250ms ease;
+        --transition-slow: 350ms ease;
+        --sidebar-width: 280px;
+        --header-height: 70px;
+      }
+
+      .light-mode {
+        --bg-primary: #f0f8ff;
+        --bg-secondary: #e6f2ff;
+        --bg-tertiary: #cce5ff;
+        --bg-sidebar: #d4ebff;
+        --bg-input: #ffffff;
+        --bg-modal: rgba(240, 248, 255, 0.95);
+        --text-primary: #003366;
+        --text-secondary: #00509e;
+        --text-tertiary: #0066cc;
+        --border-color: #b3d9ff;
+        --border-light: #99ccff;
+        --user-message-bg: #0066cc;
+        --gpt-message-bg: #e6f2ff;
+        --shadow-sm: 0 1px 3px rgba(0, 102, 204, 0.1);
+        --shadow-md: 0 4px 6px -1px rgba(0, 102, 204, 0.15);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 102, 204, 0.2);
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        transition: background-color var(--transition-normal);
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* App Container - FIXED */
+      .app-container {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Sidebar - FIXED */
+      .sidebar {
+        width: var(--sidebar-width);
+        background-color: var(--bg-sidebar);
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--border-color);
+        transition: all var(--transition-normal);
+        z-index: 10;
+        flex: 0 0 var(--sidebar-width);
+        min-height: 100%;
+        overflow: hidden;
+      }
+
+      .sidebar-header {
+        padding: 20px 16px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        gap: 10px;
+      }
+
+      .new-chat-btn {
+        flex: 1;
+        background: var(--accent-gradient);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 12px 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all var(--transition-fast);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .new-chat-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .conversations-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 0;
+      }
+
+      .conversations-header {
+        padding: 0 16px 12px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 12px;
+      }
+
+      .conversations-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .conversations {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .conversation-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background-color var(--transition-fast);
+        border-radius: var(--radius-sm);
+        margin: 0 8px;
+      }
+
+      .conversation-item:hover {
+        background-color: var(--bg-tertiary);
+      }
+
+      .conversation-item.active {
+        background-color: var(--bg-tertiary);
+        border-left: 3px solid var(--banking-green);
+      }
+
+      .conversation-icon {
+        color: var(--text-tertiary);
+        font-size: 14px;
+      }
+
+      .conversation-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+      }
+
+      .conversation-time {
+        font-size: 11px;
+        color: var(--text-tertiary);
+        white-space: nowrap;
+      }
+
+      .sidebar-footer {
+        border-top: 1px solid var(--border-color);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .sidebar-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-primary);
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: background-color var(--transition-fast);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .sidebar-btn:hover {
+        background-color: var(--bg-tertiary);
+      }
+
+      /* Banking Features Panel */
+      .banking-panel {
+        background-color: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .feature-btn {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 10px 12px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all var(--transition-fast);
+        font-size: 13px;
+        font-weight: 500;
+        text-align: left;
+      }
+
+      .feature-btn:hover {
+        background-color: var(--accent-primary);
+        color: white;
+        transform: translateX(2px);
+      }
+
+      /* Main Content - FIXED */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Header - FIXED */
+      .header {
+        height: var(--header-height);
+        background-color: var(--bg-primary);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        z-index: 5;
+        flex-shrink: 0;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-icon {
+        background: var(--accent-gradient);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 16px;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .logo h1 {
+        font-size: 20px;
+        font-weight: 700;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .bank-badge {
+        background: linear-gradient(135deg, var(--banking-green), #008055);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .model-selector select {
+        background-color: var(--bg-tertiary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        outline: none;
+        transition: border-color var(--transition-fast);
+        min-width: 120px;
+      }
+
+      .model-selector select:hover {
+        border-color: var(--banking-green);
+      }
+
+      /* Quick Actions - FIXED */
+      .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        background-color: var(--bg-secondary);
+        padding: 12px 24px;
+        border-bottom: 1px solid var(--border-color);
+        flex-shrink: 0;
+      }
+
+      .action-btn {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 8px 16px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all var(--transition-fast);
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .action-btn:hover {
+        background-color: var(--accent-primary);
+        color: white;
+        transform: translateY(-1px);
+      }
+
+      /* Chat Container - FIXED */
+      .chat-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Chat Messages - FIXED */
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        scroll-behavior: smooth;
+        min-height: 0;
+      }
+
+      /* Message Styles */
+      .message {
+        display: flex;
+        gap: 16px;
+        animation: messageFadeIn 0.3s ease-out;
+      }
+
+      @keyframes messageFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message-avatar {
+        flex-shrink: 0;
+      }
+
+      .avatar-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .user-message .avatar-icon {
+        background: var(--accent-gradient);
+        color: white;
+      }
+
+      .gpt-message .avatar-icon {
+        background: linear-gradient(135deg, var(--banking-green), #008055);
+        color: white;
+      }
+
+      .message-content {
+        flex: 1;
+        max-width: min(800px, 100%);
+      }
+
+      .message-sender {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text-primary);
+      }
+
+      .message-text {
+        background-color: var(--gpt-message-bg);
+        border-radius: var(--radius-lg);
+        padding: 16px 20px;
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+        overflow-wrap: break-word;
+      }
+
+      .user-message {
+        flex-direction: row-reverse;
+      }
+
+      .user-message .message-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+
+      .user-message .message-text {
+        background: var(--accent-gradient);
+        color: white;
+        border: none;
+        border-top-right-radius: var(--radius-sm);
+      }
+
+      .gpt-message .message-text {
+        border-top-left-radius: var(--radius-sm);
+      }
+
+      .message-time {
+        font-size: 12px;
+        color: var(--text-tertiary);
+        margin-top: 8px;
+        font-weight: 500;
+      }
+
+      /* Banking Message Cards */
+      .banking-card {
+        background: linear-gradient(
+          135deg,
+          var(--bg-secondary),
+          var(--bg-tertiary)
+        );
+        border-radius: var(--radius-md);
+        padding: 16px;
+        margin: 12px 0;
+        border-left: 4px solid var(--banking-green);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .banking-card h4 {
+        color: var(--banking-green);
+        margin-bottom: 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .banking-card p {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin: 4px 0;
+      }
+
+      /* Input Container - FIXED */
+      .input-container {
+        border-top: 1px solid var(--border-color);
+        background-color: var(--bg-primary);
+        padding: 24px;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        background: var(--bg-primary);
+        z-index: 5;
+        width: 100%;
+        
+      }
+
+      .input-wrapper {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        position: relative;
+      }
+
+      .text-input-wrapper {
+        flex: 1;
+        position: relative;
+      }
+
+      #message-input {
+        width: 100%;
+        background-color: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: 16px 52px 16px 20px;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--text-primary);
+        resize: none;
+        max-height: 200px;
+        overflow-y: auto;
+        outline: none;
+        transition: border-color var(--transition-fast),
+          box-shadow var(--transition-fast);
+        box-shadow: var(--shadow-sm);
+        font-family: inherit;
+      }
+
+      #message-input:focus {
+        border-color: var(--banking-green);
+        box-shadow: 0 0 0 3px rgba(0, 168, 107, 0.2);
+      }
+
+      #message-input::placeholder {
+        color: var(--text-tertiary);
+      }
+
+      .input-hint {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        font-size: 12px;
+        color: var(--text-tertiary);
+        pointer-events: none;
+      }
+
+      .send-btn {
+        background: var(--accent-gradient);
+        border: none;
+        color: white;
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition-fast);
+        font-size: 18px;
+        flex-shrink: 0;
+        box-shadow: var(--shadow-md);
+      }
+
+      .send-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .send-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .input-footer {
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .banking-hints {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .hint-tag {
+        background: var(--bg-tertiary);
+        color: var(--text-secondary);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        border: 1px solid var(--border-color);
+      }
+
+      .hint-tag:hover {
+        background: var(--accent-primary);
+        color: white;
+        transform: translateY(-1px);
+      }
+
+      .disclaimer {
+        font-size: 12px;
+        color: var(--text-tertiary);
+      }
+
+      /* Loading indicator */
+      #loading {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(10, 25, 41, 0.9);
+        color: var(--text-primary);
+        padding: 20px 30px;
+        border-radius: var(--radius-lg);
+        z-index: 1000;
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(10px);
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--banking-green);
+        color: white;
+        padding: 12px 20px;
+        border-radius: var(--radius-md);
+        z-index: 1000;
+        box-shadow: var(--shadow-lg);
+        animation: slideIn 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Scrollbar - FIXED */
+      .chat-messages::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .chat-messages::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+
+      .chat-messages::-webkit-scrollbar-thumb:hover {
+        background: var(--border-light);
+      }
+
+      /* Hide other scrollbars */
+      .app-container::-webkit-scrollbar,
+      .main-content::-webkit-scrollbar,
+      body::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Code highlighting */
+      .message-text pre {
+        background-color: rgba(0, 102, 204, 0.1);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        overflow-x: auto;
+        margin: 12px 0;
+        position: relative;
+        border: 1px solid var(--border-color);
+      }
+
+      .light-mode .message-text pre {
+        background-color: rgba(0, 102, 204, 0.05);
+      }
+
+      .message-text code {
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        padding: 2px 6px;
+        border-radius: var(--radius-sm);
+        background-color: rgba(0, 102, 204, 0.1);
+      }
+
+      /* Responsive Design - FIXED */
+      @media (max-width: 768px) {
+        .sidebar {
+          position: absolute;
+          transform: translateX(-100%);
+          height: 100%;
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .quick-actions {
+          overflow-x: auto;
+          padding: 10px 16px;
+        }
+
+        .banking-hints {
+          display: none;
+        }
+
+        /* Compact layout override */
+        .header {
+          height: 56px;
+        }
+        .quick-actions {
+          padding: 8px 16px;
+        }
+        .chat-messages {
+          padding: 16px;
+          gap: 12px;
+        }
+        .input-container {
+          padding: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header {
+          height: 60px;
+        }
+
+        .logo h1 {
+          display: none;
+        }
+
+        .message {
+          gap: 12px;
+        }
+
+        .avatar-icon {
+          width: 32px;
+          height: 32px;
+          font-size: 12px;
+        }
+
+        .input-wrapper {
+          gap: 8px;
+        }
+
+        #message-input {
+          padding: 14px 48px 14px 16px;
+        }
+
+        .input-action-btn,
+        .send-btn {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body class="dark-mode">
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <button class="new-chat-btn" id="new-chat-btn">
+            <i class="fas fa-plus"></i>
+            New Banking Query
+          </button>
+        </div>
+
+        <div class="conversations-list">
+          <div class="conversations-header">
+            <h3>Banking Inquiries</h3>
+          </div>
+          <div class="conversations" id="conversations-list">
+            <!-- Conversations will be loaded here -->
+          </div>
+        </div>
+
+        <div class="banking-panel">
+          <button
+            class="feature-btn"
+            onclick="insertBankingTemplate('balance')"
+          >
+            <i class="fas fa-wallet"></i> Check Balance
+          </button>
+          <button
+            class="feature-btn"
+            onclick="insertBankingTemplate('transfer')"
+          >
+            <i class="fas fa-exchange-alt"></i> Transfer Money
+          </button>
+          <button
+            class="feature-btn"
+            onclick="insertBankingTemplate('statement')"
+          >
+            <i class="fas fa-file-invoice-dollar"></i> Account Statement
+          </button>
+          <button class="feature-btn" onclick="insertBankingTemplate('loan')">
+            <i class="fas fa-hand-holding-usd"></i> Loan Inquiry
+          </button>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="sidebar-btn" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+            <span>Banking Mode</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Chat Area -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+          <div class="header-left">
+            <div class="logo">
+              <div class="logo-icon">₿</div>
+              <h1>BANK BOT AI</h1>
+              <div class="bank-badge">
+                <i class="fas fa-shield-alt"></i>
+                SECURE
+              </div>
+            </div>
+          </div>
+          <div class="header-right">
+            <div class="model-selector">
+              <select id="model-select">
+                <option value="bankbot-ai">BankBot AI</option>
+                <option value="financial-expert">Financial Expert</option>
+                <option value="secure-assistant">Secure Assistant</option>
+              </select>
+            </div>
+          </div>
+        </header>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="action-btn" onclick="insertBankingTemplate('balance')">
+            <i class="fas fa-balance-scale"></i> Balance
+          </button>
+          <button
+            class="action-btn"
+            onclick="insertBankingTemplate('transfer')"
+          >
+            <i class="fas fa-money-check-alt"></i> Transfer
+          </button>
+          <button
+            class="action-btn"
+            onclick="insertBankingTemplate('statement')"
+          >
+            <i class="fas fa-chart-line"></i> Statement
+          </button>
+          <button class="action-btn" onclick="insertBankingTemplate('loan')">
+            <i class="fas fa-home"></i> Loans
+          </button>
+          <button class="action-btn" onclick="insertBankingTemplate('card')">
+            <i class="fas fa-credit-card"></i> Cards
+          </button>
+          <button class="action-btn" onclick="insertBankingTemplate('support')">
+            <i class="fas fa-headset"></i> Support
+          </button>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+          <div class="chat-messages" id="chat-messages">
+            <!-- Welcome message will be inserted here -->
+          </div>
+
+          <!-- Input Area -->
+          <div class="input-container">
+            <div class="input-wrapper">
+              <div class="text-input-wrapper">
+                <textarea
+                  id="message-input"
+                  placeholder="Ask about banking, accounts, transfers, loans, or financial advice..."
+                  rows="1"
+                  autocomplete="off"
+                ></textarea>
+                <div class="input-hint">
+                  <span>Press Enter to send</span>
+                </div>
+              </div>
+              <button class="send-btn" id="send-btn">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+            <div class="input-footer">
+              <div class="banking-hints" id="banking-hints">
+                <span
+                  class="hint-tag"
+                  onclick="insertBankingTemplate('balance')"
+                  >Balance Inquiry</span
+                >
+                <span
+                  class="hint-tag"
+                  onclick="insertBankingTemplate('transfer')"
+                  >Fund Transfer</span
+                >
+                <span class="hint-tag" onclick="insertBankingTemplate('loan')"
+                  >Loan Rates</span
+                >
+                <span class="hint-tag" onclick="insertBankingTemplate('fees')"
+                  >Bank Fees</span
+                >
+              </div>
+              <p class="disclaimer">
+                <i class="fas fa-lock"></i> Bank-grade security • All
+                conversations are encrypted
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading">
+      <i class="fas fa-spinner fa-spin"></i> Processing banking request...
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <script>
+      // ========== BANKING TEMPLATES ==========
+      const BANKING_TEMPLATES = {
+        balance: "How can I check my account balance?",
+        transfer: "What are the steps to transfer money to another account?",
+        statement: "How do I get my account statement for the last 3 months?",
+        loan: "What are the current interest rates for different types of loans?",
+        card: "My debit card is not working. How can I troubleshoot?",
+        fees: "What are the charges for different banking services?",
+        support: "How do I contact customer support?",
+        fd: "What are the fixed deposit rates and terms?",
+        investment: "What investment options are available?",
+      };
+
+      // ========== ENHANCED BANKING SYSTEM PROMPT ==========
+      const BANKING_SYSTEM_PROMPT = `You are BankBot AI, a specialized banking assistant powered by advanced AI technology.
+
+CORE IDENTITY:
+- You are NOT "NEXA Bank", "ABC Bank", or any specific bank
+- You are a neutral, brand-agnostic banking AI assistant
+- You provide generic banking information applicable to all banks
+
+RESPONSE GUIDELINES:
+1. Use ONLY generic terms: "banks typically", "financial institutions", "most lenders"
+2. NEVER mention specific bank names
+3. NEVER use "our bank", "we offer", "our rates"
+4. Provide factual, neutral information
+5. Generate dynamic, helpful responses based on user queries
+
+EXPERTISE AREAS:
+1. Account services (balance, statements)
+2. Transactions (transfers, payments)
+3. Loans (interest rates, eligibility)
+4. Cards (credit/debit, troubleshooting)
+5. Financial advice (savings, investments)
+6. Banking security and fraud prevention
+
+FORMATTING:
+- Use bullet points for lists
+- Use bold for headings when helpful
+- Keep responses clear and concise
+- Include practical steps when relevant
+
+SAFETY & SECURITY:
+- Never ask for sensitive information
+- Always recommend official channels for transactions
+- Disclaim that rates/fees may vary`;
+
+      // ========== IMPROVED CHAT TITLE GENERATOR ==========
+      class ChatTitleGenerator {
+        static generateTitle(userMessage, aiResponse = "") {
+          const message = userMessage.toLowerCase().trim();
+
+          // Enhanced keyword mapping with context awareness
+          const keywordMap = [
+            {
+              keywords: [
+                "balance",
+                "how much",
+                "money in account",
+                "account balance",
+                "current balance",
+              ],
+              title: "Balance Inquiry",
+              question: "How can I check my account balance?",
+            },
+            {
+              keywords: [
+                "transfer",
+                "send money",
+                "wire",
+                "remit",
+                "rtgs",
+                "neft",
+                "upi",
+                "immediate payment",
+              ],
+              title: "Fund Transfer",
+              question: "How do I transfer money to another account?",
+            },
+            {
+              keywords: [
+                "loan",
+                "interest rate",
+                "emi",
+                "borrow",
+                "home loan",
+                "car loan",
+                "personal loan",
+                "business loan",
+              ],
+              title: "Loan Inquiry",
+              question: "What are the loan options available?",
+            },
+            {
+              keywords: [
+                "statement",
+                "transaction history",
+                "passbook",
+                "account statement",
+                "monthly statement",
+              ],
+              title: "Account Statement",
+              question: "How do I get my account statement?",
+            },
+            {
+              keywords: [
+                "card",
+                "credit card",
+                "debit card",
+                "atm",
+                "card blocked",
+                "pin",
+                "cvv",
+              ],
+              title: "Card Services",
+              question: "Need help with card services?",
+            },
+            {
+              keywords: [
+                "investment",
+                "savings",
+                "fd",
+                "mutual fund",
+                "stocks",
+                "bonds",
+                "portfolio",
+              ],
+              title: "Investment Advice",
+              question: "Looking for investment options?",
+            },
+            {
+              keywords: [
+                "support",
+                "customer service",
+                "help",
+                "contact",
+                "complaint",
+                "issue",
+              ],
+              title: "Customer Support",
+              question: "How to contact support?",
+            },
+            {
+              keywords: [
+                "fees",
+                "charges",
+                "cost",
+                "rate",
+                "maintenance",
+                "transaction fee",
+              ],
+              title: "Bank Fees",
+              question: "What are the banking charges?",
+            },
+            {
+              keywords: [
+                "open account",
+                "new account",
+                "register",
+                "account opening",
+                "kyc",
+              ],
+              title: "Account Setup",
+              question: "How to open a new account?",
+            },
+            {
+              keywords: [
+                "security",
+                "fraud",
+                "block",
+                "hacked",
+                "unauthorized",
+                "phishing",
+                "scam",
+              ],
+              title: "Security Issue",
+              question: "Security concerns?",
+            },
+            {
+              keywords: ["mortgage", "property", "house loan", "real estate"],
+              title: "Mortgage Inquiry",
+              question: "Need mortgage information?",
+            },
+            {
+              keywords: [
+                "insurance",
+                "life insurance",
+                "health insurance",
+                "vehicle insurance",
+              ],
+              title: "Insurance Services",
+              question: "Insurance related query?",
+            },
+          ];
+
+          // Check for exact matches with priority
+          for (const mapping of keywordMap) {
+            if (mapping.keywords.some((keyword) => message.includes(keyword))) {
+              // Try to extract specific type from message
+              let specificType = "";
+
+              if (
+                message.includes("home") ||
+                message.includes("house") ||
+                message.includes("property")
+              ) {
+                specificType = "Home ";
+              } else if (
+                message.includes("car") ||
+                message.includes("vehicle") ||
+                message.includes("auto")
+              ) {
+                specificType = "Car ";
+              } else if (message.includes("personal")) {
+                specificType = "Personal ";
+              } else if (message.includes("business")) {
+                specificType = "Business ";
+              } else if (
+                message.includes("education") ||
+                message.includes("student")
+              ) {
+                specificType = "Education ";
+              }
+
+              if (specificType && mapping.title.includes("Loan")) {
+                return `${specificType}Loan Inquiry`;
+              }
+
+              return mapping.title;
+            }
+          }
+
+          // Extract contextual information from the conversation
+          const words = message.split(/\s+/);
+          const meaningfulWords = words.filter(
+            (word) =>
+              word.length > 3 &&
+              ![
+                "what",
+                "how",
+                "when",
+                "where",
+                "why",
+                "can",
+                "will",
+                "need",
+                "want",
+                "like",
+                "tell",
+                "about",
+                "information",
+              ].includes(word.toLowerCase())
+          );
+
+          if (meaningfulWords.length > 0) {
+            const firstWords = meaningfulWords.slice(0, 3).join(" ");
+            const title =
+              firstWords.charAt(0).toUpperCase() +
+              firstWords.slice(1) +
+              " Inquiry";
+            return title.length > 30 ? "Banking Inquiry" : title;
+          }
+
+          // Analyze AI response for context if available
+          if (aiResponse) {
+            const responseLower = aiResponse.toLowerCase();
+            if (
+              responseLower.includes("balance") ||
+              responseLower.includes("account")
+            ) {
+              return "Balance Inquiry";
+            } else if (
+              responseLower.includes("transfer") ||
+              responseLower.includes("send")
+            ) {
+              return "Transfer Request";
+            } else if (
+              responseLower.includes("loan") ||
+              responseLower.includes("interest")
+            ) {
+              return "Loan Information";
+            } else if (
+              responseLower.includes("statement") ||
+              responseLower.includes("history")
+            ) {
+              return "Statement Request";
+            }
+          }
+
+          // Default dynamic titles based on time
+          const hour = new Date().getHours();
+          if (hour < 12) return "Morning Banking Session";
+          if (hour < 18) return "Afternoon Banking Session";
+          return "Evening Banking Session";
+        }
+
+        static generateEmojiForTitle(title) {
+          const emojiMap = {
+            Balance: "💰",
+            Transfer: "💸",
+            Loan: "🏦",
+            "Home Loan": "🏠",
+            "Car Loan": "🚗",
+            Statement: "📊",
+            Card: "💳",
+            Investment: "📈",
+            Support: "📞",
+            Fees: "💲",
+            Account: "👤",
+            Security: "🔒",
+            Insurance: "🛡️",
+            Mortgage: "🏡",
+            Savings: "🏦",
+          };
+
+          for (const [key, emoji] of Object.entries(emojiMap)) {
+            if (title.includes(key)) return emoji;
+          }
+
+          // Default emojis based on keywords
+          if (title.includes("Morning")) return "🌅";
+          if (title.includes("Afternoon")) return "☀️";
+          if (title.includes("Evening")) return "🌙";
+          if (title.includes("Inquiry") || title.includes("Question"))
+            return "❓";
+
+          return "🏦";
+        }
+      }
+
+      // ========== AI RESPONSE GENERATOR ==========
+      class AIResponseGenerator {
+        static async generateResponse(userMessage) {
+          console.log(
+            "🤖 Generating AI response for:",
+            userMessage.substring(0, 100)
+          );
+
+          // Try to use local backend first
+          try {
+            const response = await this.callLocalAI(userMessage);
+            return response;
+          } catch (error) {
+            console.log("Local AI failed, using fallback:", error.message);
+
+            // Fallback to OpenAI API if available
+            try {
+              const response = await this.callOpenAI(userMessage);
+              return response;
+            } catch (openAIError) {
+              console.log("OpenAI failed, using smart fallback");
+              return this.generateSmartFallback(userMessage);
+            }
+          }
+        }
+
+        static async callLocalAI(prompt) {
+          const backendUrl = "http://localhost:5000/api/chat";
+
+          const response = await fetch(backendUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: prompt,
+              system_prompt: BANKING_SYSTEM_PROMPT,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Local AI backend error");
+          }
+
+          const data = await response.json();
+          return data.response || data.message;
+        }
+
+        static async callOpenAI(prompt) {
+          // This is a placeholder for OpenAI API integration
+          // You'll need to add your OpenAI API key
+          const apiKey = localStorage.getItem("openai_api_key");
+
+          if (!apiKey) {
+            throw new Error("No API key available");
+          }
+
+          const response = await fetch(
+            "https://api.openai.com/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey}`,
+              },
+              body: JSON.stringify({
+                model: "gpt-3.5-turbo",
+                messages: [
+                  {
+                    role: "system",
+                    content: BANKING_SYSTEM_PROMPT,
+                  },
+                  {
+                    role: "user",
+                    content: prompt,
+                  },
+                ],
+                temperature: 0.7,
+                max_tokens: 500,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("OpenAI API error");
+          }
+
+          const data = await response.json();
+          return data.choices[0].message.content;
+        }
+
+        static generateSmartFallback(userMessage) {
+          const message = userMessage.toLowerCase();
+
+          // Dynamic response generation based on query
+          if (message.includes("balance") || message.includes("how much")) {
+            return `**🔍 Balance Check Options**
+
+For checking your account balance, banks typically offer these methods:
+
+📱 **Mobile Banking** (Recommended):
+• Log into your bank's mobile app
+• Navigate to "Accounts" section
+• View balance instantly
+
+🏧 **ATM Services**:
+• Insert your debit card
+• Enter PIN and select "Balance Inquiry"
+• Choose to print receipt or view on screen
+
+💻 **Internet Banking**:
+• Login to your bank's website
+• Check balance in dashboard
+• Download e-statement if needed
+
+📞 **Phone Banking**:
+• Call your bank's toll-free number
+• Follow IVR instructions
+• Balance can be read out or sent via SMS
+
+💬 **SMS Banking**:
+• Send "BAL" to your bank's short code
+• Receive instant SMS with balance
+
+🕐 **Real-time Updates**: Most banks provide real-time balance
+📊 **Transaction History**: View last 5-10 transactions
+🔒 **Security Tip**: Never share OTP/PIN with anyone
+
+*Note: Some banks may charge for SMS/ATM balance inquiries. Check with your specific bank for exact procedures.*`;
+          } else if (
+            message.includes("transfer") ||
+            message.includes("send money")
+          ) {
+            return `**💸 Fund Transfer Methods**
+
+Banks offer various ways to transfer money securely:
+
+🚀 **UPI (Unified Payments Interface)**:
+• Instant 24/7 transfers
+• Use UPI ID or mobile number
+• Max limit: ₹1-2 lakh per transaction
+
+⏱️ **IMPS (Immediate Payment Service)**:
+• Real-time transfers
+• Available 24/7 including holidays
+• Limit: Up to ₹5 lakh
+
+📅 **NEFT (National Electronic Funds Transfer)**:
+• Batched transfers in hourly slots
+• Available during banking hours
+• No minimum amount
+
+🏦 **RTGS (Real Time Gross Settlement)**:
+• For large amounts (₹2 lakh+)
+• Real-time settlement
+• Minimum: ₹2 lakh
+
+💳 **Card to Card Transfer**:
+• Between same bank cards
+• Instant transfers
+• Using mobile number
+
+🌍 **International Transfers**:
+• SWIFT transfers
+• Forex conversion involved
+• Higher charges apply
+
+**Standard Requirements**:
+1. Beneficiary account details
+2. IFSC code for bank transfers
+3. UPI ID for UPI transfers
+4. Sufficient balance in account
+5. Transaction authentication (OTP)
+
+**Security Measures**:
+• Two-factor authentication
+• Transaction limits per day
+• Suspicious activity monitoring
+• 24/7 fraud helpline
+
+*Processing time and charges vary by bank and transfer type.*`;
+          } else if (
+            message.includes("loan") ||
+            message.includes("interest rate")
+          ) {
+            const loanTypes = {
+              home: { rate: "7.4% - 8.9%", emoji: "🏠" },
+              car: { rate: "8.5% - 11.5%", emoji: "🚗" },
+              personal: { rate: "10.5% - 16.0%", emoji: "👤" },
+              business: { rate: "9.5% - 14.0%", emoji: "💼" },
+              education: { rate: "8.0% - 11.0%", emoji: "🎓" },
+              gold: { rate: "7.0% - 9.5%", emoji: "💰" },
+            };
+
+            let response = `**🏦 Loan Information Overview**\n\n`;
+
+            for (const [type, info] of Object.entries(loanTypes)) {
+              response += `${info.emoji} **${
+                type.charAt(0).toUpperCase() + type.slice(1)
+              } Loan**: ${info.rate} p.a.\n`;
+            }
+
+            response += `\n**📋 General Eligibility Criteria**:\n`;
+            response += `• Age: 21-65 years\n`;
+            response += `• Income: Regular source required\n`;
+            response += `• Credit Score: 650+ preferred\n`;
+            response += `• Employment: Minimum 2-3 years\n`;
+            response += `• Documentation: KYC, income proof, address proof\n\n`;
+
+            response += `**💡 Tips for Better Rates**:\n`;
+            response += `• Maintain good credit score (750+)\n`;
+            response += `• Show stable employment history\n`;
+            response += `• Consider collateral for secured loans\n`;
+            response += `• Compare multiple lenders\n`;
+            response += `• Negotiate based on relationship with bank\n\n`;
+
+            response += `*Rates are indicative and vary based on credit profile, loan amount, tenure, and market conditions.*`;
+
+            return response;
+          } else if (
+            message.includes("statement") ||
+            message.includes("transaction")
+          ) {
+            return `**📊 Account Statement Access**
+
+**Digital Methods (Recommended)**:
+
+📱 **Mobile App**:
+• Download PDF statements
+• Custom date range selection
+• Password protected files
+• View mini-statements (last 10 transactions)
+
+💻 **Internet Banking**:
+• Comprehensive statement download
+• Export to Excel/PDF
+• View up to 7 years of history
+• Categorized transactions
+
+📧 **E-Statement**:
+• Automatic monthly delivery
+• Secure email delivery
+• Environment friendly
+• Archive for future reference
+
+**Physical Methods**:
+
+🏧 **ATM**:
+• Mini statement (last 10 transactions)
+• Option to print
+• Available 24/7
+
+🏦 **Bank Branch**:
+• Request printed statement
+• Certified copies available
+• May involve nominal charges
+• Requires account holder presence
+
+**Statement Features**:
+• Date, time of each transaction
+• Party name and reference
+• Debit/Credit amounts
+• Running balance
+• Cheque/UTR numbers
+• Transaction categorization
+
+**Security Features**:
+• Password protected PDFs
+• Digital signatures
+• Watermarking
+• Secure email delivery
+
+**Retention Period**:
+• Online: Typically 7+ years
+• Physical: Varies by bank (1-5 years)
+• Regulatory requirement: 10 years for audit
+
+*Charges may apply for physical statements or historical data beyond certain period.*`;
+          } else {
+            // Generic helpful response
+            return `**🏦 BankBot AI Assistance**
+
+I understand you have a banking query. Here's how I can help:
+
+**Common Banking Services Available**:
+
+📱 **Digital Banking**: Mobile apps, internet banking, UPI services
+💳 **Card Services**: Debit/credit card issuance, PIN generation, blocking
+🏦 **Account Management**: Balance checks, statements, account updates
+💸 **Transactions**: Transfers, bill payments, recharges
+🏠 **Loans**: Home, car, personal, business loans
+📈 **Investments**: Fixed deposits, mutual funds, insurance
+🔒 **Security**: Fraud prevention, card blocking, account security
+
+**For Specific Assistance**:
+
+1. **Account Issues**: Please use the template buttons for balance or statement queries
+2. **Transactions**: Use transfer or payment templates
+3. **Loans**: Select loan inquiry for current rates
+4. **Support**: Use support template for contact information
+
+**Security Reminder**:
+• Never share passwords or OTPs
+• Use official banking channels for transactions
+• Enable two-factor authentication
+• Monitor account regularly
+
+**Need More Help?**
+You can ask specific questions about:
+• Banking procedures
+• Account management
+• Financial products
+• Security measures
+• Digital banking features
+
+*I provide general banking information. For account-specific queries, please contact your bank directly through official channels.*`;
+          }
+        }
+      }
+
+      // ========== CHAT HISTORY MANAGEMENT ==========
+      class ChatManager {
+        constructor() {
+          this.chats =
+            JSON.parse(localStorage.getItem("bankbot-ai-chats")) || [];
+          this.currentChatId =
+            localStorage.getItem("bankbot-ai-current-chat") || null;
+          this.conversationsList =
+            document.getElementById("conversations-list");
+          this.chatMessages = document.getElementById("chat-messages");
+
+          if (this.chats.length === 0) {
+            this.createNewChat();
+          } else if (!this.currentChatId) {
+            this.currentChatId = this.chats[0].id;
+            this.loadChat(this.currentChatId);
+          } else {
+            this.loadChat(this.currentChatId);
+          }
+
+          this.renderConversationsList();
+        }
+
+        createNewChat() {
+          const chatId = "chat_" + Date.now();
+          const newChat = {
+            id: chatId,
+            title: "New Banking Session",
+            emoji: "🏦",
+            timestamp: new Date().toISOString(),
+            messages: [],
+            model: "bankbot-ai",
+          };
+
+          this.chats.unshift(newChat);
+          this.currentChatId = chatId;
+          this.saveToLocalStorage();
+          this.renderConversationsList();
+          this.renderChatMessages();
+
+          // Add welcome message
+          this.addMessage({
+            content: `🏦 <strong>Welcome to BankBot AI</strong><br><br>
+                             I'm your secure banking assistant, powered by advanced AI technology.<br><br>
+                             <div class="banking-card">
+                                <h4><i class="fas fa-shield-alt"></i> How I Can Help:</h4>
+                                <p>• Account balance and statement inquiries</p>
+                                <p>• Fund transfer guidance</p>
+                                <p>• Loan and interest rate information</p>
+                                <p>• Card services and troubleshooting</p>
+                                <p>• Investment and savings advice</p>
+                                <p>• Banking security best practices</p>
+                             </div>
+                             <p><strong>System Status:</strong> <span id="ai-status">Initializing AI backend...</span></p>`,
+            sender: "gpt",
+            timestamp: new Date().toISOString(),
+          });
+
+          this.testBackend();
+          return newChat;
+        }
+
+        loadChat(chatId) {
+          const chat = this.chats.find((c) => c.id === chatId);
+          if (chat) {
+            this.currentChatId = chatId;
+            localStorage.setItem("bankbot-ai-current-chat", chatId);
+            this.renderChatMessages();
+
+            document.querySelectorAll(".conversation-item").forEach((item) => {
+              item.classList.remove("active");
+            });
+            const activeItem = document.querySelector(
+              `[data-chat-id="${chatId}"]`
+            );
+            if (activeItem) activeItem.classList.add("active");
+
+            return chat;
+          }
+          return null;
+        }
+
+        addMessageToCurrentChat(content, sender) {
+          const chat = this.chats.find((c) => c.id === this.currentChatId);
+          if (!chat) return;
+
+          const message = {
+            content,
+            sender,
+            timestamp: new Date().toISOString(),
+          };
+
+          chat.messages.push(message);
+
+          // Update chat title based on user message and AI response
+          if (sender === "user" && chat.messages.length <= 3) {
+            // Wait for AI response before updating title
+            setTimeout(() => {
+              this.updateChatTitle(chat);
+            }, 1000);
+          } else if (sender === "gpt" && chat.title === "New Banking Session") {
+            this.updateChatTitle(chat);
+          }
+
+          this.saveToLocalStorage();
+          this.renderChatMessages();
+          return message;
+        }
+
+        updateChatTitle(chat) {
+          const userMessages = chat.messages.filter((m) => m.sender === "user");
+          const gptMessages = chat.messages.filter((m) => m.sender === "gpt");
+
+          if (userMessages.length > 0) {
+            const lastUserMessage =
+              userMessages[userMessages.length - 1].content;
+            const lastGptMessage =
+              gptMessages.length > 0
+                ? gptMessages[gptMessages.length - 1].content
+                : "";
+
+            const newTitle = ChatTitleGenerator.generateTitle(
+              lastUserMessage,
+              lastGptMessage
+            );
+            const newEmoji = ChatTitleGenerator.generateEmojiForTitle(newTitle);
+
+            if (newTitle !== chat.title) {
+              chat.title = newTitle;
+              chat.emoji = newEmoji;
+              this.renderConversationsList();
+              this.saveToLocalStorage();
+            }
+          }
+        }
+
+        renderChatMessages() {
+          const chat = this.chats.find((c) => c.id === this.currentChatId);
+          if (!chat) return;
+
+          this.chatMessages.innerHTML = "";
+
+          chat.messages.forEach((message) => {
+            this.createMessageElement(
+              message.content,
+              message.sender,
+              message.timestamp
+            );
+          });
+
+          setTimeout(() => {
+            this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+          }, 100);
+        }
+
+        renderConversationsList() {
+          this.conversationsList.innerHTML = "";
+
+          // Sort chats by timestamp (newest first)
+          const sortedChats = [...this.chats].sort(
+            (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+          );
+
+          sortedChats.forEach((chat) => {
+            const item = document.createElement("div");
+            item.className = `conversation-item ${
+              chat.id === this.currentChatId ? "active" : ""
+            }`;
+            item.setAttribute("data-chat-id", chat.id);
+
+            const time = new Date(chat.timestamp).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
+            item.innerHTML = `
+                        <div class="conversation-icon" style="font-size: 16px; min-width: 20px;">${
+                          chat.emoji || "🏦"
+                        }</div>
+                        <div class="conversation-title">${chat.title}</div>
+                        <div class="conversation-time">${time}</div>
+                    `;
+
+            item.addEventListener("click", () => this.loadChat(chat.id));
+            this.conversationsList.appendChild(item);
+          });
+        }
+
+        createMessageElement(content, sender, timestamp) {
+          const messageDiv = document.createElement("div");
+          messageDiv.className = `message ${sender}-message`;
+
+          const time = new Date(timestamp).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          let formattedContent = content;
+          if (sender === "user") {
+            formattedContent = content
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;")
+              .replace(/\n/g, "<br>");
+          }
+
+          const senderName = sender === "user" ? "You" : "BankBot AI";
+          const avatarText = sender === "user" ? "👤" : "🤖";
+
+          messageDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <div class="avatar-icon">${avatarText}</div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-sender">${senderName}</div>
+                        <div class="message-text">${formattedContent}</div>
+                        <div class="message-time">${time} • Banking Session</div>
+                    </div>
+                `;
+
+          this.chatMessages.appendChild(messageDiv);
+          return messageDiv;
+        }
+
+        saveToLocalStorage() {
+          localStorage.setItem("bankbot-ai-chats", JSON.stringify(this.chats));
+          localStorage.setItem("bankbot-ai-current-chat", this.currentChatId);
+        }
+
+        async testBackend() {
+          try {
+            const response = await fetch("http://localhost:5000/health", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              const statusElement = document.getElementById("ai-status");
+              if (statusElement) {
+                statusElement.innerHTML = `<span style="color: #00a86b;">✅ AI Backend Connected (v${
+                  data.version || "5.0"
+                })</span>`;
+              }
+              this.showToast("✅ BankBot AI ready for queries");
+              console.log("✅ Backend connected:", data);
+              return true;
+            }
+          } catch (error) {
+            const statusElement = document.getElementById("ai-status");
+            if (statusElement) {
+              statusElement.innerHTML = `<span style="color: #ef4444;">⚠️ Backend not responding - Using fallback mode</span>`;
+            }
+            console.warn("⚠️ Backend not running, using fallback responses");
+            return false;
+          }
+        }
+
+        showToast(message) {
+          const toast = document.createElement("div");
+          toast.className = "toast";
+          toast.innerHTML = `<i class="fas fa-bank"></i> ${message}`;
+          document.body.appendChild(toast);
+
+          setTimeout(() => toast.remove(), 2000);
+        }
+      }
+
+      // ========== MAIN APPLICATION ==========
+      let chatManager;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("🏦 BankBot AI Loading...");
+
+        // Initialize chat manager
+        chatManager = new ChatManager();
+
+        // Theme toggle
+        document
+          .getElementById("theme-toggle")
+          .addEventListener("click", function () {
+            const body = document.body;
+            if (body.classList.contains("dark-mode")) {
+              body.classList.remove("dark-mode");
+              body.classList.add("light-mode");
+              this.querySelector("span").textContent = "Light Mode";
+              this.querySelector("i").className = "fas fa-sun";
+            } else {
+              body.classList.remove("light-mode");
+              body.classList.add("dark-mode");
+              this.querySelector("span").textContent = "Banking Mode";
+              this.querySelector("i").className = "fas fa-moon";
+            }
+            chatManager.showToast("Theme changed");
+          });
+
+        // New chat button
+        document
+          .getElementById("new-chat-btn")
+          .addEventListener("click", function () {
+            chatManager.createNewChat();
+          });
+
+        // Send button
+        document
+          .getElementById("send-btn")
+          .addEventListener("click", sendMessage);
+
+        // Message input
+        const messageInput = document.getElementById("message-input");
+        messageInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+
+        // Auto-resize
+        messageInput.addEventListener("input", function () {
+          this.style.height = "auto";
+          this.style.height = this.scrollHeight + "px";
+        });
+
+        // Model selector
+        document
+          .getElementById("model-select")
+          .addEventListener("change", function () {
+            const currentChat = chatManager.chats.find(
+              (c) => c.id === chatManager.currentChatId
+            );
+            if (currentChat) {
+              currentChat.model = this.value;
+              chatManager.saveToLocalStorage();
+            }
+          });
+
+        console.log("🏦 BankBot AI ready!");
+      });
+
+      // Insert banking template
+      window.insertBankingTemplate = function (templateType) {
+        const input = document.getElementById("message-input");
+        const template = BANKING_TEMPLATES[templateType];
+
+        if (template) {
+          input.value = template;
+          input.focus();
+          input.style.height = "auto";
+          input.style.height = input.scrollHeight + "px";
+
+          chatManager.showToast("Template inserted");
+        }
+      };
+
+      // Send message function
+      async function sendMessage() {
+        const input = document.getElementById("message-input");
+        const sendBtn = document.getElementById("send-btn");
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        // Quick disable UI
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        // Add user message immediately
+        chatManager.addMessageToCurrentChat(message, "user");
+
+        // Clear input
+        input.value = "";
+        input.style.height = "auto";
+        input.focus();
+
+        try {
+          // Generate AI response
+          const aiResponse = await AIResponseGenerator.generateResponse(
+            message
+          );
+          chatManager.addMessageToCurrentChat(aiResponse, "gpt");
+        } catch (error) {
+          console.error("Error generating response:", error);
+
+          // Use fallback
+          const fallbackResponse =
+            AIResponseGenerator.generateSmartFallback(message);
+          chatManager.addMessageToCurrentChat(fallbackResponse, "gpt");
+
+          chatManager.showToast("⚠️ Using enhanced fallback mode");
+        }
+
+        // Re-enable button
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+      }
+    </script>
+  </body>
+</html>
